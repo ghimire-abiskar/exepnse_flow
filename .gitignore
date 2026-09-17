@@ -1,0 +1,29 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+.gradle-user-home/
+.gradle/The root issue is that you are accidentally trying to commit your **Gradle cache directory** (`.gradle-user-home/`) to Git.
+
+Dependency cache files should never be committed to source control. In this case, deep directory nesting combined with long package names exceeded the Windows default maximum path length (`MAX_PATH`, 260 characters), causing `Filename too long`.
+
+**1. Ignore the Gradle cache in `.gitignore`**
+
+Add the following lines to your project's `.gitignore` file (create the file in the project root if it does not exist):
+
+```gitignore
+.gradle/
+.gradle-user-home/
+build/
+**/build/
